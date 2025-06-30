@@ -6,6 +6,29 @@ import pandas as pd
 from transformers import pipeline
 
 # -----------------------
+# Load secrets safely
+# -----------------------
+
+def load_secrets(filepath="secrets.txt"):
+    secrets = {}
+    try:
+        with open(filepath) as f:
+            for line in f:
+                if "=" in line:
+                    key, value = line.strip().split("=", 1)
+                    secrets[key.strip()] = value.strip()
+    except FileNotFoundError:
+        st.warning("secrets.txt not found. Please create it with your API keys.")
+    return secrets
+
+secrets = load_secrets()
+api_key = secrets.get("NEWS_API_KEY", None)
+
+if api_key is None:
+    st.error("API key not found. Please check secrets.txt.")
+    st.stop()
+
+# -----------------------
 # Finsight App
 # -----------------------
 
@@ -184,8 +207,6 @@ if ticker_input:
             "sentiment-analysis",
             model="yiyanghkust/finbert-tone"
         )
-
-        api_key = "57a7003366cf49df871148a70caeb49e"
 
         url = (
             f"https://newsapi.org/v2/everything?"
