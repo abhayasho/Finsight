@@ -40,5 +40,19 @@ All running locally and for free!
 - **Overall Verdict**  
   Combines fundamentals and sentiment into a final GOOD / NEUTRAL / BAD score.
 
+## 🛠 How to Run Locally
+
+Clone the repo:
+
+```bash
+git clone https://github.com/abhayasho/Finsight.git
+cd Finsight
+pip install -r requirements.txt
+ollama pull mistral
+ollama serve
+
+Run the Streamlit app:
+
+streamlit run app.py
 
 
