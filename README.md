@@ -42,13 +42,17 @@ All running locally and for free!
 
 ## 🛠 How to Run Locally
 
+```bash
 Clone the repo:
 
-```bash
 git clone https://github.com/abhayasho/Finsight.git
+
 cd Finsight
+
 pip install -r requirements.txt
+
 ollama pull mistral
+
 ollama serve
 
 Run the Streamlit app:
