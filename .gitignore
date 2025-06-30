@@ -1,0 +1,19 @@
+# Bytecode files
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
+
+# Virtual environments
+.venv/
+env/
+
+# IDE settings
+.idea/
+
+# Logs
+*.log
+
+# Secret keys
+secrets.txt
