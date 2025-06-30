@@ -40,9 +40,7 @@ All running locally and for free!
 - **Overall Verdict**  
   Combines fundamentals and sentiment into a final GOOD / NEUTRAL / BAD score.
 
----
 
-## 🛠 How to Run Locally
 
 Clone the repo:
 
