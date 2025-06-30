@@ -42,5 +42,3 @@ All running locally and for free!
 
 
 
-Clone the repo:
-
