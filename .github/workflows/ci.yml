@@ -1,0 +1,98 @@
+name: Cross-platform checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: ${{ matrix.os }} / Python ${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            requirements-dev.txt
+      - name: Install core and test dependencies
+        run: python -m pip install -r requirements-dev.txt
+      - name: Validate Python syntax
+        shell: python
+        run: |
+          import compileall
+          from pathlib import Path
+          failures = [str(path) for path in Path(".").rglob("*.py")
+                      if not any(part.startswith(".") for part in path.parts)
+                      and not compileall.compile_file(str(path), quiet=1)]
+          if failures:
+              raise SystemExit("Syntax errors: " + ", ".join(failures))
+      - name: Launcher diagnostics
+        run: python launch.py --check
+      - name: Windows double-click entrypoint
+        if: runner.os == 'Windows'
+        shell: cmd
+        run: call "Start Finsight.bat" --check
+      - name: macOS double-click entrypoint
+        if: runner.os == 'macOS'
+        run: ./"Start Finsight.command" --check
+      - name: Unit and app tests
+        run: python -m pytest -q
+      - name: Headless server smoke test
+        shell: python
+        run: |
+          import os
+          import subprocess
+          import sys
+          import tempfile
+          import time
+          import urllib.error
+          import urllib.request
+
+          with tempfile.TemporaryDirectory(prefix="finsight-ci-") as directory:
+              path = os.path.join(directory, "streamlit.log")
+              with open(path, "w", encoding="utf-8") as log:
+                  process = subprocess.Popen(
+                      [sys.executable, "-m", "streamlit", "run", "app.py",
+                       "--server.headless=true", "--server.address=127.0.0.1",
+                       "--server.port=8765", "--browser.gatherUsageStats=false"],
+                      stdout=log, stderr=subprocess.STDOUT,
+                  )
+                  ready = False
+                  try:
+                      for _ in range(80):
+                          if process.poll() is not None:
+                              break
+                          try:
+                              with urllib.request.urlopen("http://127.0.0.1:8765/_stcore/health", timeout=1) as response:
+                                  ready = response.status == 200
+                              if ready:
+                                  break
+                          except (OSError, urllib.error.URLError):
+                              pass
+                          time.sleep(0.5)
+                  finally:
+                      if process.poll() is None:
+                          process.terminate()
+                          try:
+                              process.wait(timeout=10)
+                          except subprocess.TimeoutExpired:
+                              process.kill()
+                              process.wait(timeout=5)
+              if not ready:
+                  with open(path, encoding="utf-8") as log:
+                      print(log.read())
+                  raise SystemExit("Streamlit did not become healthy")
+              print("Headless Streamlit health check passed")

@@ -1,9 +1,14 @@
 # Bytecode files
 __pycache__/
 *.pyc
+*.pyo
+.pytest_cache/
+.coverage
+htmlcov/
 
 # macOS
 .DS_Store
+Thumbs.db
 
 # Virtual environments
 .venv/
@@ -11,9 +16,17 @@ env/
 
 # IDE settings
 .idea/
+.vscode/
 
 # Logs
 *.log
 
 # Secret keys
 secrets.txt
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+*.egg-info/
+build/
+dist/
