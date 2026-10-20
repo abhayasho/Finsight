@@ -11,7 +11,9 @@ Checked locally on macOS with Python 3.12 and scikit-learn 1.9.1 on October 19, 
 
 The test run emits one harmless joblib physical-core detection warning in the sandbox and falls back to logical-core detection. ML work itself is constrained to one CPU thread.
 
-The Windows/macOS/Ubuntu × Python 3.11/3.12/3.13 workflow is included. Native Windows execution and the matrix have not yet run for this update because GitHub publishing still awaits approval. Docker and real FinBERT/Ollama inference have not been run; optional AI behavior is covered with mocked outputs and failures.
+The [GitHub Actions validation run](https://github.com/abhayasho/Finsight/actions/runs/39361298199) passed all nine Windows/macOS/Ubuntu × Python 3.11/3.12/3.13 jobs for source commit `35d42a582f816f3b5d75efeb8dc62a9c5351547d`. Each job installed the core and test dependencies, checked Python syntax and launcher diagnostics, ran the unit/app tests, and started a real headless Streamlit server with an HTTP health check. Native Windows `.bat` and macOS `.command` entrypoint diagnostics also passed. These checks do not exercise a person's first-install desktop browser flow or platform security prompts.
+
+Docker and real FinBERT/Ollama inference have not been run; optional AI behavior is covered with mocked outputs and failures.
 
 The classifier experiment is not a survivorship-free universe backtest, a personal suitability model or a live track record. Its fixed qualification rules are not formal proof of future profitability. See [ML.md](ML.md) for target semantics, costs, sample limitations, serial dependence and frozen-model caveats.
 

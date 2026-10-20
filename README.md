@@ -7,7 +7,7 @@ The expanded models expose their assumptions and data coverage. Their output is 
 ## Start here
 
 1. Install **Python 3.12** from [python.org](https://www.python.org/downloads/). Python 3.11 and 3.13 are also supported. On Windows, enable **Add Python to PATH** if the installer offers it.
-2. Download and **extract the entire Finsight ZIP** into a folder you can write to, such as Documents. Do not run it from inside the ZIP.
+2. [Download Finsight](https://github.com/abhayasho/Finsight/archive/refs/heads/main.zip) and **extract the entire ZIP** into a folder you can write to, such as Documents. Do not run it from inside the ZIP.
 3. Open the extracted folder and double-click the launcher for your computer:
 
    | Computer | Open this file |
@@ -82,7 +82,7 @@ No environment activation is necessary. See [the Docker and developer guide](doc
 
 ## Compatibility and validation
 
-The project targets 64 bit Python 3.11–3.13. CI is configured to install dependencies, run tests, and start the server on Windows, macOS, and Ubuntu for each supported Python version. A configured workflow is not evidence that every platform has passed: check the repository's **Actions** results for an actual run. Native Windows behavior must be confirmed there or on a Windows machine.
+The project targets 64 bit Python 3.11–3.13. All nine Windows, macOS, and Ubuntu combinations passed dependency installation, automated tests, and server startup in the [3.0 validation run](https://github.com/abhayasho/Finsight/actions/runs/39361298199), including native Windows and macOS launcher diagnostics. See [validation details](docs/VALIDATION.md) and [the latest CI results](https://github.com/abhayasho/Finsight/actions/workflows/ci.yml) for later changes.
 
 Core dependencies have version ranges; they are not a locked, reproducible package snapshot. A first install resolves compatible releases. The launcher reinstalls requirements after their contents change; `python launch.py --reinstall` requests a fresh dependency resolution when needed.
 
