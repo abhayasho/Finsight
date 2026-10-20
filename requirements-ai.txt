@@ -1,0 +1,4 @@
+# Optional only: python launch.py --install-ai
+-r requirements.txt
+torch>=2.6,<3
+transformers>=4.48,<5
